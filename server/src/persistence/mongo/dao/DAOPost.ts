@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 import DAO from '../../utils/DAO';
-import PostSchema from '../../mongo/schemas/Post';
+import PostSchema from '../schemas/PostSchema';
 import Post from '../../../models/entities/Post';
 
 class DAOPost implements DAO<Post, string> {
@@ -54,14 +54,16 @@ class DAOPost implements DAO<Post, string> {
     if (!this.isValidObjectId(post))
       throw 'Invalid post id';
 
+    const foundedPost = await PostSchema.findById(post.id);
+
     const updatedPost = {
       title: post.title,
       description: post.description,
       tags: post.tags,
       fileUpload: post.fileUpload,
-      upVote: post.upVote,
+      upVote: post.upVote || foundedPost?.upVote,
       creator: post.creator,
-      createdAt: post.createdAt,
+      createdAd: post.createdAt || foundedPost?.createdAt,
       _id: post.id,
     };
 
@@ -104,7 +106,7 @@ class DAOPost implements DAO<Post, string> {
     if (post === null)
       return null;
 
-    return new Post(post.id, post.title, post.description, post.tags, post.upVote, post.creator, post.createdAt, post.fileUpload);
+    return new Post(post.id, post.title, post.description, post.tags, post.fileUpload, post.upVote, post.creator, post.createdAt);
   };
 
   async selectAll(): Promise<Array<Post>> {
@@ -112,7 +114,7 @@ class DAOPost implements DAO<Post, string> {
     let postsToReturn: Array<Post> = [];
 
     posts.forEach((post) => {
-      postsToReturn.push(new Post(post.id, post.title, post.description, post.tags, post.upVote, post.creator, post.createdAt, post.fileUpload));
+      postsToReturn.push(new Post(post.id, post.title, post.description, post.tags, post.fileUpload, post.upVote, post.creator, post.createdAt));
     });
     return postsToReturn;
   };

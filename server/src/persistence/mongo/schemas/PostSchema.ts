@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import PostEntity from '../../../models/entities/Post'
+import Post from '../../../models/entities/Post'
 
-// TODO: validations like https://mongoosejs.com/docs/validation.html
-const postSchema = new mongoose.Schema<PostEntity>({
+const postSchema = new mongoose.Schema<Post>({
   title: {
     type: String,
     required: [true, 'The title is required'],
@@ -30,6 +29,6 @@ const postSchema = new mongoose.Schema<PostEntity>({
 });
 
 // To create methods: https://mongoosejs.com/docs/index.html
-var Post = mongoose.model("Post", postSchema);
+var PostSchema = mongoose.model("Post", postSchema);
 
-export default Post;
+export default PostSchema;
