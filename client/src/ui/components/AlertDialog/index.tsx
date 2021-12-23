@@ -11,7 +11,7 @@ import {
 interface IAlertDialogProps {
   id?: string;
   title?: string;
-  content: React.ReactFragment;
+  content: React.ReactNode;
   size?: 'lg' | 'md' | 'sm' | 'xl' | 'xs' | false;
   open: boolean;
   onClose: () => void;
