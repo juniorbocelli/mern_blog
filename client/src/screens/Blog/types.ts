@@ -1,7 +1,14 @@
-export type IsQueryingAPIState = boolean;
+export type PostIdState = undefined | string;
 
-export type AlertMessage = {
+export type FormFieldsState = {
   title: string;
-  message: string;
+  description: string;
+
+  tags: Array<string>;
+  creator: string;
+
+  fileUpload: {
+    base64URL: string | ArrayBuffer | null;
+    file: Blob | null;
+  };
 };
-export type AlertMessageState = undefined | AlertMessage;
