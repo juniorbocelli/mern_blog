@@ -8,6 +8,7 @@ import {
 
 import BoxPage from '../../ui/pages/BoxPage';
 import Form from './components/Form';
+import Posts from './components/Posts';
 
 import useStates from './states';
 
@@ -31,7 +32,7 @@ const Blog: React.FC<React.ReactFragment> = (props) => {
             <Form {...states} />
           </Grid>
           <Grid item xs={12} sm={4}>
-
+            <Posts {...states} />
           </Grid>
         </Grid>
       </Container>

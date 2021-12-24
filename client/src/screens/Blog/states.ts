@@ -3,6 +3,7 @@ import useBoxPageStates, { IUseBoxPageStates } from '../../ui/pages/BoxPage/stat
 import {
   PostIdState,
   FormFieldsState,
+  PostsListState,
 } from './types';
 
 export interface IUseStates extends IUseBoxPageStates {
@@ -11,6 +12,9 @@ export interface IUseStates extends IUseBoxPageStates {
 
   formFields: FormFieldsState;
   setFormFields: React.Dispatch<React.SetStateAction<FormFieldsState>>;
+
+  postsList: PostsListState;
+  setPostsList: React.Dispatch<React.SetStateAction<PostsListState>>;
 };
 
 export default function useStates(): IUseStates {
@@ -32,7 +36,8 @@ export default function useStates(): IUseStates {
       base64URL: '',
       file: null,
     },
-  })
+  });
+  const [postsList, setPostsList] = React.useState<PostsListState>([]);
 
   return {
     isQueryingAPI,
@@ -46,5 +51,8 @@ export default function useStates(): IUseStates {
 
     formFields,
     setFormFields,
+
+    postsList,
+    setPostsList,
   };
 };
