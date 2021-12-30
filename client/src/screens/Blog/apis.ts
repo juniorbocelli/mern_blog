@@ -14,8 +14,8 @@ export interface IUseAPIs {
   addBlogPost: () => void;
   getSinglePost: () => void;
   updateSingleBlogPost: () => void;
-  removeSinglePost: () => void;
-  likeBlogPost: () => void;
+  removeSinglePost: (idPost: string) => void;
+  likeBlogPost: (idPost: string) => void;
 };
 
 export default function useAPIs(states: IUseStates): IUseAPIs {
@@ -58,7 +58,7 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
         setAlertMessage({
           title: "Error",
           message: error.data.message,
-        })
+        });
       })
       .finally(() => {
         setIsQueryingAPI(false);
@@ -115,19 +115,151 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
   };
 
   const getSinglePost = () => {
+    const {
+      postId,
 
+      setFormFields,
+    } = states;
+    setIsQueryingAPI(true);
+
+    if (typeof (postId) !== "undefined")
+      getSinglePostAPI(postId)
+        .then((response) => {
+          const data: PostDataAPI = response.data;
+
+          setFormFields({
+            title: data.title,
+            description: data.description,
+
+            tags: data.tags,
+            fileUpload: {
+              base64URL: data.fileUpload || '',
+              file: null,
+            },
+
+            creator: data.creator,
+          });
+        })
+        .catch((error) => {
+          setAlertMessage({
+            title: "Error",
+            message: error.data.message,
+          });
+        })
+        .finally(() => {
+          setIsQueryingAPI(false);
+        });
   };
 
   const updateSingleBlogPost = () => {
+    const {
+      postId,
+      setPostId,
 
+      formFields,
+      setFormFields,
+    } = states;
+
+    setIsQueryingAPI(true);
+
+    const postToSend: PostDataAPI = {
+      title: formFields.title,
+      description: formFields.description,
+
+      tags: formFields.tags,
+      fileUpload: formFields.fileUpload.base64URL?.toString(),
+
+      creator: formFields.creator,
+    };
+
+    if (typeof (postId) !== "undefined")
+      updateSingleBlogPostAPI(postId, postToSend)
+        .then((response) => {
+          // Because the control of default options are in bakckend, it's not safe to overlay these options here, so we are
+          // reload the posts
+          getAllBlogPosts();
+
+          // TODO: create a single font of initial states
+          setFormFields({
+            title: '',
+            description: '',
+
+            tags: [],
+            fileUpload: {
+              base64URL: '',
+              file: null,
+            },
+            creator: ''
+          });
+
+          setPostId(undefined);
+        })
+        .catch((error) => {
+          setAlertMessage({
+            title: "Error",
+            message: error.data.message,
+          })
+        })
+        .finally(() => {
+          setIsQueryingAPI(false);
+        });
   };
 
-  const removeSinglePost = () => {
+  const removeSinglePost = (idPost: string) => {
+    const {
+      postId,
+      setPostId,
 
+      setFormFields,
+    } = states;
+
+    setIsQueryingAPI(true);
+
+    removeSinglePostAPI(idPost)
+      .then((response) => {
+        if (idPost === postId) {
+          setFormFields({
+            title: '',
+            description: '',
+
+            tags: [],
+            fileUpload: {
+              base64URL: '',
+              file: null,
+            },
+            creator: ''
+          });
+
+          setPostId(undefined);
+        };
+      })
+      .catch((error) => {
+        setAlertMessage({
+          title: "Error",
+          message: error.data.message,
+        })
+      })
+      .finally(() => {
+        setIsQueryingAPI(false);
+      });
   };
 
-  const likeBlogPost = () => {
+  const likeBlogPost = (idPost: string) => {
+    setIsQueryingAPI(true);
 
+    removeSinglePostAPI(idPost)
+      .then((response) => {
+
+      })
+      .catch((error) => {
+        setAlertMessage({
+          title: "Error",
+          message: error.data.message,
+        })
+      })
+      .finally(() => {
+        setIsQueryingAPI(false);
+      });
   };
 
   return {
