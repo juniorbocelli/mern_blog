@@ -1,7 +1,7 @@
 export type IdPostDataAPI = string;
 
 export type PostDataAPI = {
-  _id?: string;
+  id?: string;
 
   title: string;
   description: string;

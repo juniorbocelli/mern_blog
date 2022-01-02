@@ -25,7 +25,7 @@ const Blog: React.FC<React.ReactFragment> = (props) => {
   effects.usePostIdWasChanged(states.postId);
 
   return (
-    <BoxPage>
+    <BoxPage states={states}>
       <Container>
         <Grid
           container

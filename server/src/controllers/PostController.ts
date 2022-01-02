@@ -11,7 +11,7 @@ class PostControler {
 
       res.status(200).json(posts);
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      res.status(200).json({ error: error.message });
     };
   };
 
@@ -32,7 +32,7 @@ class PostControler {
 
       res.status(200).json(post);
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      res.status(200).json({ error: error.message });
     };
   };
 
@@ -46,7 +46,7 @@ class PostControler {
 
       res.status(200).json(post);
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      res.status(200).json({ error: error.message });
     };
   };
 
@@ -68,7 +68,7 @@ class PostControler {
 
       res.status(200).json(post);
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      res.status(200).json({ error: error.message });
     };
   };
 
@@ -82,7 +82,7 @@ class PostControler {
 
       res.status(200).json({ message: "Successfuly removed" });
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      res.status(200).json({ error: error.message });
     };
   };
 
@@ -103,7 +103,7 @@ class PostControler {
 
       res.status(200).json(loadedPost);
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      res.status(200).json({ error: error.message });
     };
   };
 };

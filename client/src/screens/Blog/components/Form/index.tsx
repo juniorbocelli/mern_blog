@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 import { IUseStates } from "../../states";
+import useAPIs from "../../apis";
 
 const Input = styled('input')({
   display: 'none',
@@ -18,6 +19,7 @@ const Input = styled('input')({
 
 const Form: React.FC<IUseStates> = (states) => {
   const theme = useTheme();
+  const apis = useAPIs(states);
 
   const {
     postId,
@@ -75,8 +77,13 @@ const Form: React.FC<IUseStates> = (states) => {
       });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
+    if (typeof (postId) === 'undefined')
+      apis.addBlogPost();
+    else
+      apis.updateSingleBlogPost();
   };
 
   return (

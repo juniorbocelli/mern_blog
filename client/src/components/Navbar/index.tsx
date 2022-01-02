@@ -16,7 +16,7 @@ const Navbar: React.FC<React.ReactFragment> = (props) => {
       sx={
         {
           borderRadius: 10,
-          margin: "6px 0px",
+          m: theme.spacing(2),
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",

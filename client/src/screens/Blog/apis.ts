@@ -33,13 +33,22 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
 
     getAllBlogPostsAPI()
       .then((response) => {
-        console.log('response', response);
+        console.log('Response - getAllBlogPostsAPI', response);
+        if (typeof (response.data.error) !== 'undefined') {
+          setAlertMessage({
+            title: "Error",
+            message: response.data.error,
+          });
+
+          return;
+        };
+
         const data: Array<PostDataAPI> = response.data;
         let posts: PostsListState = [];
         // TODO: improve error control at optional data
         data.map((item) => {
           posts.push({
-            id: item._id!,
+            id: item.id!,
 
             title: item.title,
             description: item.description,
@@ -56,11 +65,9 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
         setPostsList(posts);
       })
       .catch((error) => {
-        // TODO: create alert for the cases where there is no exception handled
-        console.log("Error", error)
         setAlertMessage({
           title: "Error",
-          message: error.data.message,
+          message: error.message,
         });
       })
       .finally(() => {
@@ -89,6 +96,16 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
 
     addBlogPostAPI(postToSend)
       .then((response) => {
+        console.log('Response - addBlogPostAPI', response);
+        if (typeof (response.data.error) !== 'undefined') {
+          setAlertMessage({
+            title: "Error",
+            message: response.data.error,
+          });
+
+          return;
+        };
+
         // Because the control of default options are in bakckend, it's not safe to overlay these options here, so we are
         // reload the posts
         getAllBlogPosts();
@@ -109,8 +126,8 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
       .catch((error) => {
         setAlertMessage({
           title: "Error",
-          message: error.data.message,
-        })
+          message: error.message,
+        });
       })
       .finally(() => {
         setIsQueryingAPI(false);
@@ -128,6 +145,16 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
     if (typeof (postId) !== "undefined")
       getSinglePostAPI(postId)
         .then((response) => {
+          console.log('Response - getSinglePostAPI', response);
+          if (typeof (response.data.error) !== 'undefined') {
+            setAlertMessage({
+              title: "Error",
+              message: response.data.error,
+            });
+
+            return;
+          };
+
           const data: PostDataAPI = response.data;
 
           setFormFields({
@@ -146,7 +173,7 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
         .catch((error) => {
           setAlertMessage({
             title: "Error",
-            message: error.data.message,
+            message: error.message,
           });
         })
         .finally(() => {
@@ -178,6 +205,16 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
     if (typeof (postId) !== "undefined")
       updateSingleBlogPostAPI(postId, postToSend)
         .then((response) => {
+          console.log('Response - updateSingleBlogPostAPI', response);
+          if (typeof (response.data.error) !== 'undefined') {
+            setAlertMessage({
+              title: "Error",
+              message: response.data.error,
+            });
+
+            return;
+          };
+
           // Because the control of default options are in bakckend, it's not safe to overlay these options here, so we are
           // reload the posts
           getAllBlogPosts();
@@ -200,8 +237,8 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
         .catch((error) => {
           setAlertMessage({
             title: "Error",
-            message: error.data.message,
-          })
+            message: error.message,
+          });
         })
         .finally(() => {
           setIsQueryingAPI(false);
@@ -220,6 +257,16 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
 
     removeSinglePostAPI(idPost)
       .then((response) => {
+        console.log('Response - removeSinglePostAPI', response);
+        if (typeof (response.data.error) !== 'undefined') {
+          setAlertMessage({
+            title: "Error",
+            message: response.data.error,
+          });
+
+          return;
+        };
+
         if (idPost === postId) {
           setFormFields({
             title: '',
@@ -235,12 +282,14 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
 
           setPostId(undefined);
         };
+
+        getAllBlogPosts();
       })
       .catch((error) => {
         setAlertMessage({
           title: "Error",
-          message: error.data.message,
-        })
+          message: error.message,
+        });
       })
       .finally(() => {
         setIsQueryingAPI(false);
@@ -250,15 +299,26 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
   const likeBlogPost = (idPost: string) => {
     setIsQueryingAPI(true);
 
-    removeSinglePostAPI(idPost)
+    likeBlogPostAPI(idPost)
       .then((response) => {
+        console.log('Response - likeBlogPostAPI', response);
+        if (typeof (response.data.error) !== 'undefined') {
+          setAlertMessage({
+            title: "Error",
+            message: response.data.error,
+          });
+
+          return;
+        };
+
+        getAllBlogPosts();
 
       })
       .catch((error) => {
         setAlertMessage({
           title: "Error",
-          message: error.data.message,
-        })
+          message: error.message,
+        });
       })
       .finally(() => {
         setIsQueryingAPI(false);

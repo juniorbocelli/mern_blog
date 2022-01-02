@@ -15,6 +15,7 @@ import moment from "moment";
 import blogImageLogo from '../../../../assets/images/blogLogo.png'
 import { Post } from '../../types';
 import { IUseStates } from '../../states';
+import useAPIs from '../../apis';
 
 interface IPostProps {
   post: Post;
@@ -22,18 +23,19 @@ interface IPostProps {
 };
 
 const BlogPost: React.FC<IPostProps> = (props) => {
-
   const {
     post,
     states,
   } = props;
 
-  const handlClickUpVote = (id: string) => {
+  const apis = useAPIs(states);
 
+  const handlClickUpVote = (id: string) => {
+    apis.likeBlogPost(id);
   };
 
   const handleClickRemove = (id: string) => {
-
+    apis.removeSinglePost(id);
   };
 
   return (
