@@ -33,6 +33,7 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
 
     getAllBlogPostsAPI()
       .then((response) => {
+        console.log('response', response);
         const data: Array<PostDataAPI> = response.data;
         let posts: PostsListState = [];
         // TODO: improve error control at optional data
@@ -55,6 +56,8 @@ export default function useAPIs(states: IUseStates): IUseAPIs {
         setPostsList(posts);
       })
       .catch((error) => {
+        // TODO: create alert for the cases where there is no exception handled
+        console.log("Error", error)
         setAlertMessage({
           title: "Error",
           message: error.data.message,

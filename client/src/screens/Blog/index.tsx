@@ -11,10 +11,18 @@ import Form from './components/Form';
 import Posts from './components/Posts';
 
 import useStates from './states';
+import useAPIs from './apis';
+import useEffects from './effects';
 
 const Blog: React.FC<React.ReactFragment> = (props) => {
   const states = useStates();
+  const apis = useAPIs(states);
+  const effects = useEffects(apis);
   const theme = useTheme();
+
+  // Add effects
+  effects.useComponentDidMount();
+  effects.usePostIdWasChanged(states.postId);
 
   return (
     <BoxPage>
